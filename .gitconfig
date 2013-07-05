@@ -1,0 +1,5 @@
+[user]
+	name = Michael Recachinas
+	email = mgr3yp@virginia.edu
+[credential]
+	helper = osxkeychain
