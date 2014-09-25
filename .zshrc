@@ -5,7 +5,9 @@ ZSH=$HOME/.oh-my-zsh
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-ZSH_THEME="robbyrussell"
+ZSH_THEME="agnoster"
+DEFAULT_USER="michaelrecachinas1"
+#"robbyrussell"
 
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
@@ -39,14 +41,10 @@ source $ZSH/oh-my-zsh.sh
 # Customize to your needs...
 export PATH=/opt/local/bin:/opt/local/sbin:/opt/local/bin:/opt/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/opt/X11/bin:/usr/local/go/bin:/usr/texbin:/Users/michaelrecachinas/.rvm/bin
 
+source ~/.nvm/nvm.sh
 
-export JAVA_HOME=/System/Library/Frameworks/JavaVM.framework/Versions/1.5.0/Home
-export NXJ_HOME=~/lejos_nxj
-export DYLD_LIBRARY_PATH=$NXJ_HOME/bin
-export PATH=$PATH:$JAVA_HOME/bin:$NXJ_HOME/bin
 export UWHPSC=$HOME/Desktop/\[Coursera\]\ High\ Performance\ Scientific\ Computing/uwhpsc
-# export PATH ="$PATH:$HOME/yagarto/yagarto-4.7.2/bin"
-# export PATH="$PATH:$HOME/yagarto/yagarto-4.7.2/tools"
+
 
 cdls(){
 if [[ -z "$1" ]]; then 
@@ -66,3 +64,41 @@ alias aws='ssh -i ~/Desktop/\[Coursera\]\ Startup\ Engineering/hw1/startup-engin
 
 ### Added by the Heroku Toolbelt
 export PATH="/usr/local/heroku/bin:$PATH"
+
+export PATH="$PATH:/usr/local/smlnj/bin"
+
+PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"
+
+###begin-jump-bash_profile
+#
+# Installation:
+#
+# jump >> ~/.bash_profile && source ~/.bash_profile
+#
+
+function jump {
+  local si="$IFS";
+  IFS=$'\n';
+  local newDir=$(JUMPPROFILE=1 command jump "$@");
+  cd "$newDir";
+  IFS="$si";
+}
+alias j="jump -a"
+
+###end-jump-bash_profile
+
+alias hs="http-server"
+#alias vim=/Applications/MacVim.app/Contents/MacOS/Vim
+#alias vi=vim
+alias cool=Development/cool
+alias julia="exec '/Applications/Julia-0.2.1.app/Contents/Resources/julia/bin/julia'"
+alias subl='nocorrect subl'
+alias nw="/Applications/node-webkit.app/Contents/MacOS/node-webkit"
+alias imessage="./Development/message.sh"
+export PATH=/Users/michaelrecachinas1/pebble-dev/PebbleSDK-current/bin:$PATH
+export JAVA_HOME=`/usr/libexec/java_home -v 1.8.0_20`
+
+# OPAM configuration
+. /Users/michaelrecachinas1/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
