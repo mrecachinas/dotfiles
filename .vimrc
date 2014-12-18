@@ -55,3 +55,4 @@ filetype plugin indent on       " load filetype plugins and indent settings
 
 set spl=en spell
 set nospell
+set mouse=a

@@ -43,9 +43,6 @@ export PATH=/opt/local/bin:/opt/local/sbin:/opt/local/bin:/opt/local/sbin:/usr/b
 
 source ~/.nvm/nvm.sh
 
-export UWHPSC=$HOME/Desktop/\[Coursera\]\ High\ Performance\ Scientific\ Computing/uwhpsc
-
-
 cdls(){
 if [[ -z "$1" ]]; then 
     cd && ls
@@ -55,12 +52,13 @@ fi
 }
 alias cd=cdls
 
-#alias sublime='open -a Sublime\ Text\ 2'
+alias battery='~/battery.sh'
 alias sshgalileo='ssh mgr3yp@galileo.phys.virginia.edu -Y'
 alias sftpgalileo='sftp mgr3yp@galileo.phys.virginia.edu'
 alias plato='ssh mgr3yp@plato.cs.virginia.edu'
 alias g++11='g++ -W -Wall -Wextra -Weffc++ -pedantic -std=c++0x'
-alias aws='ssh -i ~/Desktop/\[Coursera\]\ Startup\ Engineering/hw1/startup-engineering-mike-stanford.pem ubuntu@ec2-54-218-18-121.us-west-2.compute.amazonaws.com'
+
+export CIL="/usr/local/src/cil"
 
 ### Added by the Heroku Toolbelt
 export PATH="/usr/local/heroku/bin:$PATH"
@@ -90,15 +88,17 @@ alias j="jump -a"
 ###end-jump-bash_profile
 
 alias hs="http-server"
-#alias vim=/Applications/MacVim.app/Contents/MacOS/Vim
-#alias vi=vim
-alias cool=Development/cool
-alias julia="exec '/Applications/Julia-0.2.1.app/Contents/Resources/julia/bin/julia'"
+alias vim=/Applications/MacVim.app/Contents/MacOS/Vim
+alias vi=vim
+alias cool=~/Development/cool
 alias subl='nocorrect subl'
-alias nw="/Applications/node-webkit.app/Contents/MacOS/node-webkit"
 alias imessage="./Development/message.sh"
+alias cook1="ssh -Y mgr3yp@cook1.cs.virginia.edu"
+alias cook2="ssh -Y mgr3yp@cook2.cs.virginia.edu"
+alias cook3="ssh -Y mgr3yp@cook3.cs.virginia.edu"
 export PATH=/Users/michaelrecachinas1/pebble-dev/PebbleSDK-current/bin:$PATH
 export JAVA_HOME=`/usr/libexec/java_home -v 1.8.0_20`
+export PATH="/Applications/Julia-0.3.3.app/Contents/Resources/julia/bin:$PATH"
 
 # OPAM configuration
 . /Users/michaelrecachinas1/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
