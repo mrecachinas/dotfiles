@@ -30,4 +30,3 @@ set hlsearch      " highlight matches
 
 nnoremap j gj
 nnoremap k gk
-

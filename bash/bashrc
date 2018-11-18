@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+source ~/.dotfiles/bash/aliases.bash
+source ~/.dotfiles/bash/environment.bash

@@ -1,10 +1,10 @@
 [user]
 	name = Michael Recachinas
-	email = mgr3yp@virginia.edu
+	email = m.recachinas@gmail.com
 [core]
 	editor = vim
 	whitespace = fix, -indent-with-non-tab,trailing-space,cr-at-eol
-	excludesfile = /Users/michaelrecachinas1/.gitignore_global
+	excludesfile = /Users/mrecachinas/.gitignore_global
 [web]
 	browser = google-chrome
 [credential]
