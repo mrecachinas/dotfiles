@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-
-alias ll="ls -ltr"
-alias la="ls -latr"
