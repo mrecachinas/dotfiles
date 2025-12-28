@@ -45,7 +45,6 @@
 [help]
 	autocorrect = prompt
 [commit]
-	gpgsign = true
 	verbose = true
 [rerere]
 	enabled = true
@@ -60,10 +59,6 @@
 	process = git-lfs filter-process
 	required = true
 	clean = git-lfs clean -- %f
-[gpg]
-	format = ssh
-[gpg "ssh"]
-	program = /Applications/1Password.app/Contents/MacOS/op-ssh-sign
 [credential "https://github.com"]
 	helper = 
 	helper = !/opt/homebrew/bin/gh auth git-credential
