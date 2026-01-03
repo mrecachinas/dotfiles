@@ -1,17 +1,17 @@
 #!/usr/bin/env zsh
 
-. "$HOME/.cargo/env"
-
+# ===== Environment Variables =====
 export GPG_TTY=$(tty)
+export GITHUB_USERNAME=mrecachinas
+export BUN_INSTALL="$HOME/.bun"
+
+# Go configuration
 export GOPROXY=https://goproxy.githubapp.com/mod,https://proxy.golang.org/,direct
 export GOPRIVATE=
 export GONOPROXY=
 export GONOSUMDB='github.com/github/*'
-export PATH="/opt/homebrew/opt/make/libexec/gnubin:$PATH"
-export PATH="$PATH:/Users/mrecachinas/.dotnet/tools"
-export PATH="$HOME/.rbenv/bin:$HOME/.rbenv/shims:$PATH"
-export PATH="/opt/homebrew/opt/mysql@8.0/bin:$PATH"
-export PATH="$PATH:/Users/mrecachinas/.local/bin"
-export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
-export GITHUB_USERNAME=mrecachinas
+
+# ===== PATH (consolidated, no duplicates) =====
+# Order: user tools → language managers → homebrew extras → system
+export PATH="$HOME/.local/bin:$BUN_INSTALL/bin:$HOME/.rbenv/bin:$HOME/.rbenv/shims:$HOME/.cargo/bin:/opt/homebrew/opt/make/libexec/gnubin:/opt/homebrew/opt/mysql@8.0/bin:$PATH"
+export PATH="$PATH:$HOME/.dotnet/tools"

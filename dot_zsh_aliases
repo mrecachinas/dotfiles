@@ -4,13 +4,143 @@
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
 # For a full list of active aliases, run `alias`.
-alias vim="/opt/homebrew/bin/vim"
-alias todo='git grep -l TODO | xargs -n1 git blame -f -n -w | grep "$(git config user.name)" | grep TODO | sed "s/.\{9\}//" | sed "s/(.*)[[:space:]]*//"'
-alias latencies="curl http://cheat.sh/latencies"
-alias tailscale="/Applications/Tailscale.app/Contents/MacOS/Tailscale"
 
+# ===== Editor =====
+alias vim="/opt/homebrew/bin/vim"
+alias v="nvim"
+alias vi="nvim"
+
+# ===== Modern CLI replacements =====
+alias ls="eza --icons --group-directories-first"
+alias ll="eza -la --icons --group-directories-first --git"
+alias la="eza -a --icons --group-directories-first"
+alias lt="eza --tree --level=2 --icons"
+alias lt3="eza --tree --level=3 --icons"
+alias cat="bat --paging=never"
+alias catp="bat"  # with pager
+alias grep="rg"
+alias find="fd"
+alias du="dust"
+alias df="duf"
+alias ps="procs"
+alias top="btop"
+alias sed="sd"
+alias http="xh"
+alias man="tldr"  # quick reference; use \man for full manual
+
+# ===== Git shortcuts =====
+alias g="git"
+alias gst="git status -sb"
+alias glog="git log --oneline --graph --decorate -20"
+alias glogg="git log --oneline --graph --decorate --all"
+alias gdiff="git diff --color-moved"
+alias gds="git diff --staged --color-moved"
+alias gco="git checkout"
+alias gcb="git checkout -b"
+alias gp="git push"
+alias gpf="git push --force-with-lease"
+alias gl="git pull"
+alias ga="git add"
+alias gaa="git add --all"
+alias gc="git commit"
+alias gcm="git commit -m"
+alias gca="git commit --amend"
+alias gcane="git commit --amend --no-edit"
+alias grb="git rebase"
+alias grbi="git rebase -i"
+alias gcp="git cherry-pick"
+alias gundo="git reset HEAD~1 --soft"
+alias gwip="git add -A && git commit -m 'WIP'"
+alias gui="gitui"
+
+# ===== Navigation =====
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+alias .....="cd ../../../.."
+alias -- -="cd -"
+alias cdf='cd "$(fd --type d | fzf)"'  # fuzzy cd into directory
+
+# ===== Safety =====
+alias rm="trash"
+alias cp="cp -i"
+alias mv="mv -i"
+alias mkdir="mkdir -pv"
+
+# ===== Utilities =====
+alias weather="curl wttr.in"
+alias myip="curl -s ifconfig.me"
+alias localip="ipconfig getifaddr en0"
+alias ports="lsof -i -P -n | grep LISTEN"
+alias flushdns="sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder"
+alias path='echo $PATH | tr ":" "\n"'
+alias reload="source ~/.zshrc"
+alias latencies="curl http://cheat.sh/latencies"
+alias cheat="curl cheat.sh/"
+
+# ===== macOS specific =====
+alias tailscale="/Applications/Tailscale.app/Contents/MacOS/Tailscale"
+alias showfiles="defaults write com.apple.finder AppleShowAllFiles YES && killall Finder"
+alias hidefiles="defaults write com.apple.finder AppleShowAllFiles NO && killall Finder"
+alias afk="pmset displaysleepnow"
+alias emptytrash="trash -e"
+
+# ===== Docker =====
+alias d="docker"
+alias dc="docker compose"
+alias dps="docker ps --format 'table {{.Names}}\t{{.Status}}\t{{.Ports}}'"
+alias dimg="docker images"
+alias dprune="docker system prune -af"
+
+# ===== Development =====
+alias todo='git grep -l TODO | xargs -n1 git blame -f -n -w | grep "$(git config user.name)" | grep TODO | sd ".\{9\}" "" | sd "\(.*\)[[:space:]]*" ""'
+alias serve="python3 -m http.server"
+alias json="jless"
+alias br="broot"
+
+# ===== FZF powered =====
+alias preview="fzf --preview 'bat --color=always {}'"
+alias vf='nvim $(fzf --preview "bat --color=always {}")'  # fuzzy open in nvim
+
+# ===== Functions =====
 timezsh() {
   shell=${1-$SHELL}
   for i in $(seq 1 10); do /usr/bin/time $shell -i -c exit; done
+}
+
+# Quick directory creation and cd
+mkcd() {
+  mkdir -p "$1" && cd "$1"
+}
+
+# Extract any archive
+extract() {
+  if [ -f "$1" ]; then
+    case "$1" in
+      *.tar.bz2) tar xjf "$1" ;;
+      *.tar.gz)  tar xzf "$1" ;;
+      *.tar.xz)  tar xJf "$1" ;;
+      *.bz2)     bunzip2 "$1" ;;
+      *.gz)      gunzip "$1" ;;
+      *.tar)     tar xf "$1" ;;
+      *.tbz2)    tar xjf "$1" ;;
+      *.tgz)     tar xzf "$1" ;;
+      *.zip)     unzip "$1" ;;
+      *.Z)       uncompress "$1" ;;
+      *.7z)      7z x "$1" ;;
+      *)         echo "'$1' cannot be extracted" ;;
+    esac
+  else
+    echo "'$1' is not a valid file"
+  fi
+}
+
+# Quickly search and replace in files
+replace() {
+  if [ $# -lt 3 ]; then
+    echo "Usage: replace <find> <replace> <glob>"
+    return 1
+  fi
+  fd -t f "$3" -x sd "$1" "$2" {}
 }
 

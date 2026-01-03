@@ -3,23 +3,20 @@
 # Uncomment below to begin profiling
 # zmodload zsh/zprof
 
-# Path to your oh-my-zsh installation.
+# ===== Oh-My-Zsh Configuration =====
 export ZSH="$HOME/.oh-my-zsh"
 
-# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="spaceship"
+# Disable theme - using Starship instead
+ZSH_THEME=""
 
-# Uncomment one of the following lines to change the auto-update behavior
-zstyle ':omz:update' mode disabled  # disable automatic updates
-
-# Uncomment the following line if pasting URLs and other text is messed up.
+# Performance settings
+zstyle ':omz:update' mode disabled
 DISABLE_MAGIC_FUNCTIONS="true"
-
 DISABLE_AUTO_UPDATE="true"
 ZSH_DISABLE_COMPFIX="true"
 DISABLE_COMPFIX="true"
 
-# Smarter completion initialization
+# Smarter completion initialization (once per day)
 autoload -Uz compinit
 if [ "$(date +'%j')" != "$(stat -f '%Sm' -t '%j' ~/.zcompdump 2>/dev/null)" ]; then
     compinit
@@ -27,13 +24,10 @@ else
     compinit -C
 fi
 
+# Lazy load nvm
 zstyle ':omz:plugins:nvm' lazy yes
 
-# Which plugins would you like to load?
-# Standard plugins can be found in $ZSH/plugins/
-# Custom plugins may be added to $ZSH_CUSTOM/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
+# Minimal plugin set
 plugins=(
     git
     nvm
@@ -48,30 +42,37 @@ ZSH_AUTOSUGGEST_USE_ASYNC=1
 
 source $ZSH/oh-my-zsh.sh
 
-SPACESHIP_PROMPT_ASYNC=true
-SPACESHIP_PROMPT_ADD_NEWLINE=true
-SPACESHIP_CHAR_SYMBOL="⚡"
+# ===== Lazy-load rbenv =====
+rbenv() {
+    unfunction rbenv
+    eval "$(command rbenv init -)"
+    rbenv "$@"
+}
+# Ensure ruby/gem commands also trigger rbenv init
+ruby() { rbenv version >/dev/null; unfunction ruby; ruby "$@"; }
+gem() { rbenv version >/dev/null; unfunction gem; gem "$@"; }
 
-# Only load what you actually use
-SPACESHIP_PROMPT_ORDER=(
-    time
-    user
-    dir
-    git
-    line_sep
-    char
-)
+# ===== Tool Integrations =====
+# Zoxide (smarter cd)
+eval "$(zoxide init zsh)"
 
-eval "$(rbenv init --no-rehash -)"
-(rbenv rehash &) 2> /dev/null
+# Atuin (better shell history)
+eval "$(atuin init zsh --disable-up-arrow)"
 
+# Broot (tree navigation)
+[ -f ~/.config/broot/launcher/bash/br ] && source ~/.config/broot/launcher/bash/br
+
+# ===== Lazy Sources =====
 [ -s ~/.bun/_bun ] && source ~/.bun/_bun
-
 [ -f ~/.cargo/env ] && source ~/.cargo/env
 [ -f ~/.config/op/plugins.sh ] && source ~/.config/op/plugins.sh
 
+# ===== Personal Config =====
 [ -f ~/.zsh_env ] && source ~/.zsh_env
 [ -f ~/.zsh_aliases ] && source ~/.zsh_aliases
+
+# ===== Starship Prompt (must be last) =====
+eval "$(starship init zsh)"
 
 # Uncomment below to begin profiling
 # zprof
