@@ -164,7 +164,6 @@ mas "Bear", id: 1091189122
 mas "Day One", id: 1055511498
 mas "Fantastical", id: 975937182
 mas "GarageBand", id: 682658836
-mas "HyperList", id: 0
 mas "iMovie", id: 408981434
 mas "Keynote", id: 409183694
 mas "Microsoft Outlook", id: 985367838
@@ -183,7 +182,6 @@ vscode "github.codespaces"
 vscode "github.copilot"
 vscode "github.copilot-chat"
 vscode "github.vscode-codeql"
-vscode "github.vscode-ghas-canary"
 vscode "github.vscode-github-actions"
 vscode "github.vscode-pull-request-github"
 vscode "golang.go"
