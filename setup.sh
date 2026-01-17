@@ -38,7 +38,7 @@ read -n 1 -s
 # 5. Chezmoi + dotfiles
 echo "📦 Applying dotfiles with chezmoi..."
 if [[ ! -d "$HOME/.local/share/chezmoi" ]]; then
-    chezmoi init --apply git@github.com:mrecachinas/dotfiles.git
+    chezmoi init --apply https://github.com/mrecachinas/dotfiles
 else
     chezmoi update
 fi
