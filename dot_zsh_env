@@ -13,5 +13,5 @@ export GONOSUMDB='github.com/github/*'
 
 # ===== PATH (consolidated, no duplicates) =====
 # Order: user tools → language managers → homebrew extras → system
-export PATH="$HOME/.local/bin:$BUN_INSTALL/bin:$HOME/.rbenv/bin:$HOME/.rbenv/shims:$HOME/.cargo/bin:/opt/homebrew/opt/make/libexec/gnubin:/opt/homebrew/opt/mysql@8.0/bin:$PATH"
-export PATH="$PATH:$HOME/.dotnet/tools"
+export PATH="$HOME/.local/bin:$HOME/go/bin:$BUN_INSTALL/bin:$HOME/.rbenv/bin:$HOME/.rbenv/shims:$HOME/.cargo/bin:/opt/homebrew/opt/make/libexec/gnubin:/opt/homebrew/opt/mysql@8.0/bin:/opt/homebrew/bin:$PATH"
+export PATH="$PATH:$HOME/.dotnet/tools:/Applications/Obsidian.app/Contents/MacOS"

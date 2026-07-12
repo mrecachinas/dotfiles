@@ -32,8 +32,6 @@ plugins=(
     git
     nvm
     fzf
-    zsh-autosuggestions
-    zsh-syntax-highlighting
 )
 
 # Autosuggest settings
@@ -76,3 +74,12 @@ eval "$(starship init zsh)"
 
 # Uncomment below to begin profiling
 # zprof
+source /Users/mrecachinas/.config/op/plugins.sh
+source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

@@ -35,5 +35,8 @@ Plug 'nsf/gocode', { 'tag': 'v.20150303', 'rtp': 'vim' }
 " Plugin outside ~/.vim/plugged with post-update hook
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 
+" Copilot
+Plug 'github/copilot.vim'
+
 " Initialize plugin system
 call plug#end()

@@ -9,6 +9,7 @@
 alias vim="/opt/homebrew/bin/vim"
 alias v="nvim"
 alias vi="nvim"
+alias code="code-insiders"
 
 # ===== Modern CLI replacements =====
 alias ls="eza --icons --group-directories-first"
@@ -24,7 +25,6 @@ alias du="dust"
 alias df="duf"
 alias ps="procs"
 alias top="btop"
-alias sed="sd"
 alias http="xh"
 alias man="tldr"  # quick reference; use \man for full manual
 
@@ -62,7 +62,7 @@ alias -- -="cd -"
 alias cdf='cd "$(fd --type d | fzf)"'  # fuzzy cd into directory
 
 # ===== Safety =====
-alias rm="trash"
+#alias rm="trash"
 alias cp="cp -i"
 alias mv="mv -i"
 alias mkdir="mkdir -pv"
@@ -144,3 +144,14 @@ replace() {
   fd -t f "$3" -x sd "$1" "$2" {}
 }
 
+
+# Monitor PTY usage (useful when running out of PTYs with Ghostty + Copilot CLI)
+pty() {
+  local used=$(ls /dev/ttys* 2>/dev/null | wc -l | tr -d ' ')
+  local max=$(sysctl -n kern.tty.ptmx_max)
+  echo "${used} / ${max} PTYs in use"
+}
+
+pty-watch() {
+  watch -n "${1:-5}" 'echo "$(ls /dev/ttys* | wc -l | tr -d " ") / $(sysctl -n kern.tty.ptmx_max) PTYs in use"'
+}
