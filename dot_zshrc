@@ -54,6 +54,11 @@ if command -v atuin >/dev/null 2>&1; then
     eval "$(atuin init zsh --disable-up-arrow)"
 fi
 
+# Direnv (per-directory environment)
+if command -v direnv >/dev/null 2>&1; then
+    eval "$(direnv hook zsh)"
+fi
+
 # Broot (tree navigation)
 [ -f ~/.config/broot/launcher/bash/br ] && source ~/.config/broot/launcher/bash/br
 

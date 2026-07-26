@@ -74,6 +74,10 @@ brew "coreutils"
 brew "cosign"
 # JSON, YAML, TOML, XML, and CSV query and modification tool
 brew "dasel"
+# Load/unload environment variables based on $PWD
+brew "direnv"
+# Command-line DNS Client for Humans
+brew "doggo"
 # Pack, ship and run any application as a lightweight container
 brew "docker", link: false
 # Disk Usage/Free Utility - a better 'df' alternative
@@ -122,10 +126,14 @@ brew "git-delta"
 brew "git-lfs"
 # Blazing fast terminal-ui for git written in rust
 brew "gitui"
+# Simple terminal UI for git commands
+brew "lazygit"
 # International domain name library (IDNA2008, Punycode and TR46)
 brew "libidn2"
 # GNU Transport Layer Security (TLS) Library
 brew "gnutls"
+# Render markdown on the CLI
+brew "glow"
 # GNU Privacy Guard (OpenPGP)
 brew "gnupg"
 # Package compiler and linker metadata toolkit
@@ -136,6 +144,8 @@ brew "gobject-introspection"
 brew "golangci-lint"
 # Database client and tools for the Go vulnerability database
 brew "govulncheck"
+# Tool for glamorous shell scripts
+brew "gum"
 # Ping, but with a graph
 brew "gping"
 # ISO/IEC 23008-12:2017 HEIF file format decoder and encoder
@@ -170,8 +180,12 @@ brew "iperf"
 brew "jless"
 # Lightweight and flexible command-line JSON processor
 brew "jq"
+# Handy way to save and run project-specific commands
+brew "just"
 # Modern load testing tool, using Go and JavaScript
 brew "k6"
+# Kubernetes command-line interface
+brew "kubernetes-cli"
 # Mini DNS server designed solely to route queries to localhost
 brew "launchdns", restart_service: :changed
 # Blu-Ray disc playback library for media players like VLC
@@ -186,6 +200,8 @@ brew "lsd"
 brew "make"
 # Mac App Store command-line interface
 brew "mas"
+# Polyglot runtime manager (asdf rust clone)
+brew "mise"
 # Open source relational database management system
 brew "mysql-client"
 # Open source relational database management system
