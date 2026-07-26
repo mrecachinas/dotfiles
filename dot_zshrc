@@ -16,14 +16,6 @@ DISABLE_AUTO_UPDATE="true"
 ZSH_DISABLE_COMPFIX="true"
 DISABLE_COMPFIX="true"
 
-# Smarter completion initialization (once per day)
-autoload -Uz compinit
-if [ "$(date +'%j')" != "$(stat -f '%Sm' -t '%j' ~/.zcompdump 2>/dev/null)" ]; then
-    compinit
-else
-    compinit -C
-fi
-
 # Lazy load nvm
 zstyle ':omz:plugins:nvm' lazy yes
 
@@ -31,7 +23,6 @@ zstyle ':omz:plugins:nvm' lazy yes
 plugins=(
     git
     nvm
-    fzf
 )
 
 # Autosuggest settings
@@ -79,10 +70,10 @@ fi
 [ -f /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ] && source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+if [[ -t 0 && -o zle && -f ~/.fzf.zsh ]]; then
+    source ~/.fzf.zsh
+fi
 
 # ===== Starship Prompt (must be last) =====
 if command -v starship >/dev/null 2>&1; then
