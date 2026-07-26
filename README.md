@@ -1,30 +1,25 @@
 # Dotfiles
 
-## New macOS Setup
+## New macOS setup
 
- 1. Start fresh — don't try to copy an existing laptop
- 2. Run the setup script:
-
-```sh
-	curl -fsSL https://raw.githubusercontent.com/mrecachinas/dotfiles/main/setup.sh | bash
-```
-
-Or if you've already cloned the repo:
+Start fresh, then run:
 
 ```sh
-./setup.sh
+curl -fsSL https://raw.githubusercontent.com/mrecachinas/dotfiles/main/setup.sh | bash
 ```
 
-The script will:
+The script is idempotent and safe to rerun. It installs Xcode Command Line Tools, Homebrew, and chezmoi, then lets chezmoi apply the dotfiles and run the rest of the setup.
 
- - Install Xcode Command Line Tools
- - Install Homebrew
- - Install 1Password and chezmoi (pauses for 1Password SSH setup)
- - Apply dotfiles via chezmoi
- - Install everything from ~/.Brewfile
- - Install vim-plug and plugins
- - Install nvm
+Chezmoi-managed setup installs or updates:
 
- After setup completes:
-   - Open Vim and run `:Copilot setup`
-   - Restart your terminal to load `nvm`
+- Oh My Zsh
+- Homebrew dependencies from `~/.Brewfile`
+- vim-plug and Vim plugins
+- nvm
+
+Some account-gated setup still needs an interactive sign-in:
+
+- Sign in to the App Store for `mas` apps.
+- Open 1Password and enable the SSH agent in Settings > Developer.
+- Run `gh auth login` for GitHub CLI/git HTTPS credentials.
+- Open Vim and run `:Copilot setup`.

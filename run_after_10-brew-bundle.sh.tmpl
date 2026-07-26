@@ -1,0 +1,82 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+BREWFILE_CHECKSUM="{{ include "dot_Brewfile" | sha256sum }}"
+BREWFILE="$HOME/.Brewfile"
+STATE_DIR="${XDG_STATE_HOME:-$HOME/.local/state}/dotfiles"
+FULL_STATE="$STATE_DIR/brew-bundle.sha256"
+NO_MAS_STATE="$STATE_DIR/brew-bundle-no-mas.sha256"
+
+load_homebrew_shellenv() {
+    if [[ -x /opt/homebrew/bin/brew ]]; then
+        eval "$(/opt/homebrew/bin/brew shellenv)"
+    elif [[ -x /usr/local/bin/brew ]]; then
+        eval "$(/usr/local/bin/brew shellenv)"
+    elif command -v brew >/dev/null 2>&1; then
+        eval "$(brew shellenv)"
+    fi
+}
+
+run_brew_bundle() {
+    local brewfile="$1"
+    HOMEBREW_BUNDLE_NO_UPGRADE=1 brew bundle --file="$brewfile" --no-upgrade
+}
+
+app_store_signed_in() {
+    command -v mas >/dev/null 2>&1 && mas account >/dev/null 2>&1
+}
+
+state_matches() {
+    local state_file="$1"
+    [[ -f "$state_file" ]] && [[ "$(cat "$state_file")" == "$BREWFILE_CHECKSUM" ]]
+}
+
+record_state() {
+    local state_file="$1"
+    mkdir -p "$STATE_DIR"
+    printf '%s\n' "$BREWFILE_CHECKSUM" >"$state_file"
+}
+
+load_homebrew_shellenv
+
+if ! command -v brew >/dev/null 2>&1; then
+    echo "Homebrew is required before running brew bundle" >&2
+    exit 1
+fi
+
+if [[ ! -f "$BREWFILE" ]]; then
+    echo "$BREWFILE does not exist; skipping brew bundle" >&2
+    exit 0
+fi
+
+if app_store_signed_in; then
+    if state_matches "$FULL_STATE" && brew bundle check --file="$BREWFILE" >/dev/null 2>&1; then
+        echo "Homebrew bundle already satisfied"
+        exit 0
+    fi
+
+    echo "Installing Homebrew bundle"
+    run_brew_bundle "$BREWFILE"
+    record_state "$FULL_STATE"
+    exit 0
+fi
+
+if state_matches "$NO_MAS_STATE"; then
+    cat <<'EOF'
+App Store is not signed in; non-Mac App Store dependencies are already installed.
+Sign in to the App Store, then rerun setup or `chezmoi apply` to install Mac App Store apps.
+EOF
+    exit 0
+fi
+
+echo "App Store is not signed in; installing everything except Mac App Store apps"
+TEMP_BREWFILE="$(mktemp)"
+trap 'rm -f "$TEMP_BREWFILE"' EXIT
+awk '$1 != "mas" { print }' "$BREWFILE" >"$TEMP_BREWFILE"
+run_brew_bundle "$TEMP_BREWFILE"
+record_state "$NO_MAS_STATE"
+
+cat <<'EOF'
+Mac App Store apps were skipped.
+Sign in to the App Store, then rerun setup or `chezmoi apply` to install them.
+EOF

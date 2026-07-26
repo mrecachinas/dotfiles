@@ -98,6 +98,8 @@ brew "gcc@12"
 brew "gdk-pixbuf"
 # GitHub command-line tool
 brew "gh"
+# Open source programming language to build simple/reliable/efficient software
+brew "go"
 # OpenType text shaping engine
 brew "harfbuzz"
 # Image processing and image analysis library
@@ -332,6 +334,8 @@ brew "steipete/tap/imsg", trusted: true
 brew "tidbyt/tidbyt/pixlet"
 # Find credentials all over the place
 brew "trufflesecurity/trufflehog/trufflehog", link: false
+# Password manager that keeps all passwords secure behind one password
+cask "1password"
 # Command-line interface for 1Password
 cask "1password-cli"
 # Open source, extensible AI agent that goes beyond code suggestions

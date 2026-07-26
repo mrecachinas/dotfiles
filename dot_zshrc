@@ -38,7 +38,9 @@ plugins=(
 ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE="20"
 ZSH_AUTOSUGGEST_USE_ASYNC=1
 
-source $ZSH/oh-my-zsh.sh
+if [[ -f "$ZSH/oh-my-zsh.sh" ]]; then
+    source "$ZSH/oh-my-zsh.sh"
+fi
 
 # ===== Lazy-load rbenv =====
 rbenv() {
@@ -52,10 +54,14 @@ gem() { rbenv version >/dev/null; unfunction gem; gem "$@"; }
 
 # ===== Tool Integrations =====
 # Zoxide (smarter cd)
-eval "$(zoxide init zsh)"
+if command -v zoxide >/dev/null 2>&1; then
+    eval "$(zoxide init zsh)"
+fi
 
 # Atuin (better shell history)
-eval "$(atuin init zsh --disable-up-arrow)"
+if command -v atuin >/dev/null 2>&1; then
+    eval "$(atuin init zsh --disable-up-arrow)"
+fi
 
 # Broot (tree navigation)
 [ -f ~/.config/broot/launcher/bash/br ] && source ~/.config/broot/launcher/bash/br
@@ -69,17 +75,19 @@ eval "$(atuin init zsh --disable-up-arrow)"
 [ -f ~/.zsh_env ] && source ~/.zsh_env
 [ -f ~/.zsh_aliases ] && source ~/.zsh_aliases
 
-# ===== Starship Prompt (must be last) =====
-eval "$(starship init zsh)"
-
-# Uncomment below to begin profiling
-# zprof
-source /Users/mrecachinas/.config/op/plugins.sh
-source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+[ -f /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh ] && source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+[ -f /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ] && source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# ===== Starship Prompt (must be last) =====
+if command -v starship >/dev/null 2>&1; then
+    eval "$(starship init zsh)"
+fi
+
+# Uncomment below to begin profiling
+# zprof
