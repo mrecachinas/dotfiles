@@ -4,6 +4,19 @@
 export GPG_TTY=$(tty)
 export GITHUB_USERNAME=mrecachinas
 export BUN_INSTALL="$HOME/.bun"
+export EDITOR=nvim
+export VISUAL=nvim
+export PAGER=less
+export LESS="-R"
+
+# fzf configuration
+export FZF_DEFAULT_COMMAND="fd --type f --hidden --follow --exclude .git"
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export FZF_ALT_C_COMMAND="fd --type d --hidden --follow --exclude .git"
+export FZF_CTRL_R_COMMAND=
+export FZF_DEFAULT_OPTS='--height=70% --layout=reverse --border --info=inline --prompt="❯ " --pointer="▶" --marker="✓"'
+export FZF_CTRL_T_OPTS='--preview "bat --style=numbers --color=always --line-range=:500 {}"'
+export FZF_ALT_C_OPTS='--preview "eza --tree --level=2 --icons --color=always {}"'
 
 # Go configuration
 export GOPROXY=https://goproxy.githubapp.com/mod,https://proxy.golang.org/,direct

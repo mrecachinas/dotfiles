@@ -371,8 +371,8 @@ cask "podman-desktop"
 cask "signal"
 # Music streaming service
 cask "spotify"
-# Open-source code editor
-cask "visual-studio-code"
+# Open-source code editor, Insiders build
+cask "visual-studio-code@insiders"
 mas "1Password for Safari", id: 1569813296
 mas "Adobe Lightroom", id: 1451544217
 mas "Amphetamine", id: 937984704
