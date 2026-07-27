@@ -48,6 +48,8 @@ brew "bat"
 brew "berkeley-db", link: true
 # Collection of portable C++ source libraries
 brew "boost"
+# Cross-platform graphical process/system monitor
+brew "bottom"
 # New way to see and navigate directory trees
 brew "broot"
 # Resource monitor. C++ version and continuation of bashtop and bpytop
