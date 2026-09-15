@@ -25,6 +25,10 @@ export GONOPROXY=
 export GONOSUMDB='github.com/github/*'
 
 # ===== PATH (consolidated, no duplicates) =====
-# Order: user tools → language managers → homebrew extras → system
-export PATH="$HOME/.local/bin:$HOME/go/bin:$BUN_INSTALL/bin:$HOME/.rbenv/bin:$HOME/.rbenv/shims:$HOME/.cargo/bin:/opt/homebrew/opt/make/libexec/gnubin:/opt/homebrew/opt/mysql@8.0/bin:/opt/homebrew/bin:$PATH"
+# Order: user tools → homebrew extras → system
+typeset -U path PATH
+# Scrub legacy paths inherited by long-lived terminal processes.
+path=(${path:#"$HOME/.rbenv/bin"})
+path=(${path:#"$HOME/.rbenv/shims"})
+export PATH="$HOME/.local/bin:$HOME/go/bin:$BUN_INSTALL/bin:$HOME/.cargo/bin:/opt/homebrew/opt/make/libexec/gnubin:/opt/homebrew/opt/mysql@8.0/bin:/opt/homebrew/bin:$PATH"
 export PATH="$PATH:$HOME/.dotnet/tools:/Applications/Obsidian.app/Contents/MacOS"

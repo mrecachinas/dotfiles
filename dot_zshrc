@@ -3,45 +3,71 @@
 # Uncomment below to begin profiling
 # zmodload zsh/zprof
 
-# ===== Oh-My-Zsh Configuration =====
-export ZSH="$HOME/.oh-my-zsh"
+# ===== Personal Config =====
+[ -f ~/.zsh_env ] && source ~/.zsh_env
 
-# Disable theme - using Starship instead
-ZSH_THEME=""
+# ===== Native Zsh Configuration =====
+HISTFILE="${ZDOTDIR:-$HOME}/.zsh_history"
+HISTSIZE=50000
+SAVEHIST=10000
 
-# Performance settings
-zstyle ':omz:update' mode disabled
-DISABLE_MAGIC_FUNCTIONS="true"
-DISABLE_AUTO_UPDATE="true"
-ZSH_DISABLE_COMPFIX="true"
-DISABLE_COMPFIX="true"
+setopt extended_history
+setopt hist_expire_dups_first
+setopt hist_ignore_dups
+setopt hist_ignore_space
+setopt hist_verify
+setopt share_history
 
-# Lazy load nvm
-zstyle ':omz:plugins:nvm' lazy yes
+bindkey -e
 
-# Minimal plugin set
-plugins=(
-    git
-    nvm
-)
+autoload -Uz compinit
+compinit -C
+
+unsetopt menu_complete
+unsetopt flowcontrol
+setopt auto_menu
+setopt complete_in_word
+setopt always_to_end
+
+zstyle ':completion:*' menu select
+zstyle ':completion:*' special-dirs true
+zstyle ':completion:*' list-colors ''
+zstyle ':completion:*' use-cache true
 
 # Autosuggest settings
 ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE="20"
 ZSH_AUTOSUGGEST_USE_ASYNC=1
 
-if [[ -f "$ZSH/oh-my-zsh.sh" ]]; then
-    source "$ZSH/oh-my-zsh.sh"
-fi
+# Cache generated shell integrations until their executable or arguments change.
+ZSH_INIT_CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/init"
+[[ -d "$ZSH_INIT_CACHE_DIR" ]] || mkdir -p "$ZSH_INIT_CACHE_DIR"
 
-# ===== Lazy-load rbenv =====
-rbenv() {
-    unfunction rbenv
-    eval "$(command rbenv init -)"
-    rbenv "$@"
+_cache_zsh_init() {
+    local command_name="$1"
+    shift
+
+    local executable="${commands[$command_name]:A}"
+    local cache_key="${command_name}-${ZSH_VERSION}-${(j:-:)@}"
+    cache_key="${cache_key//[^[:alnum:]_.-]/_}"
+
+    local cache_file="$ZSH_INIT_CACHE_DIR/$cache_key.zsh"
+    local temp_file="$cache_file.tmp.$$"
+
+    if [[ ! -s "$cache_file" || "$executable" -nt "$cache_file" ]]; then
+        command "$command_name" "$@" >| "$temp_file" || {
+            rm -f "$temp_file"
+            return 1
+        }
+        mv -f "$temp_file" "$cache_file"
+    fi
+
+    source "$cache_file"
 }
-# Ensure ruby/gem commands also trigger rbenv init
-ruby() { rbenv version >/dev/null; unfunction ruby; ruby "$@"; }
-gem() { rbenv version >/dev/null; unfunction gem; gem "$@"; }
+
+# ===== Runtime Management =====
+if command -v mise >/dev/null 2>&1; then
+    eval "$(mise activate zsh)"
+fi
 
 # ===== Tool Integrations =====
 # Zoxide (smarter cd)
@@ -51,7 +77,7 @@ fi
 
 # Atuin (better shell history)
 if command -v atuin >/dev/null 2>&1; then
-    eval "$(atuin init zsh --disable-up-arrow)"
+    _cache_zsh_init atuin init zsh --disable-up-arrow
 fi
 
 # Direnv (per-directory environment)
@@ -59,31 +85,25 @@ if command -v direnv >/dev/null 2>&1; then
     eval "$(direnv hook zsh)"
 fi
 
-# Broot (tree navigation)
-[ -f ~/.config/broot/launcher/bash/br ] && source ~/.config/broot/launcher/bash/br
-
-# ===== Lazy Sources =====
-[ -s ~/.bun/_bun ] && source ~/.bun/_bun
-[ -f ~/.cargo/env ] && source ~/.cargo/env
+# ===== Additional Integrations =====
 [ -f ~/.config/op/plugins.sh ] && source ~/.config/op/plugins.sh
 
-# ===== Personal Config =====
-[ -f ~/.zsh_env ] && source ~/.zsh_env
 [ -f ~/.zsh_aliases ] && source ~/.zsh_aliases
 
 [ -f /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh ] && source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 [ -f /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ] && source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
-export NVM_DIR="$HOME/.nvm"
-
 if [[ -t 0 && -o zle ]] && command -v fzf >/dev/null 2>&1; then
-    source <(fzf --zsh)
+    _cache_zsh_init fzf --zsh
 fi
 
 # ===== Starship Prompt (must be last) =====
 if command -v starship >/dev/null 2>&1; then
-    eval "$(starship init zsh)"
+    _cache_zsh_init starship init zsh
 fi
+
+unfunction _cache_zsh_init
+unset ZSH_INIT_CACHE_DIR
 
 # Uncomment below to begin profiling
 # zprof

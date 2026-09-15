@@ -1,8 +1,6 @@
 #!/usr/bin/env zsh
 
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
+# Personal aliases and functions.
 # For a full list of active aliases, run `alias`.
 
 # ===== Editor =====
@@ -28,38 +26,12 @@ alias top="btop"
 alias http="xh"
 alias man="tldr"  # quick reference; use \man for full manual
 
-# ===== Git shortcuts =====
-alias g="git"
-alias gst="git status -sb"
-alias glog="git log --oneline --graph --decorate -20"
-alias glogg="git log --oneline --graph --decorate --all"
-alias gdiff="git diff --color-moved"
-alias gds="git diff --staged --color-moved"
-alias gco="git checkout"
-alias gcb="git checkout -b"
-alias gp="git push"
-alias gpf="git push --force-with-lease"
-alias gl="git pull"
-alias ga="git add"
-alias gaa="git add --all"
-alias gc="git commit"
-alias gcm="git commit -m"
-alias gca="git commit --amend"
-alias gcane="git commit --amend --no-edit"
-alias grb="git rebase"
-alias grbi="git rebase -i"
-alias gcp="git cherry-pick"
-alias gundo="git reset HEAD~1 --soft"
-alias gwip="git add -A && git commit -m 'WIP'"
-alias gui="gitui"
-
 # ===== Navigation =====
 alias ..="cd .."
 alias ...="cd ../.."
 alias ....="cd ../../.."
 alias .....="cd ../../../.."
 alias -- -="cd -"
-alias cdf='cd "$(fd --type d | fzf)"'  # fuzzy cd into directory
 
 # ===== Safety =====
 #alias rm="trash"
@@ -74,7 +46,7 @@ alias localip="ipconfig getifaddr en0"
 alias ports="lsof -i -P -n | grep LISTEN"
 alias flushdns="sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder"
 alias path='echo $PATH | tr ":" "\n"'
-alias reload="source ~/.zshrc"
+alias reload="exec zsh"
 alias latencies="curl http://cheat.sh/latencies"
 alias cheat="curl cheat.sh/"
 
@@ -84,13 +56,6 @@ alias showfiles="defaults write com.apple.finder AppleShowAllFiles YES && killal
 alias hidefiles="defaults write com.apple.finder AppleShowAllFiles NO && killall Finder"
 alias afk="pmset displaysleepnow"
 alias emptytrash="trash -e"
-
-# ===== Docker =====
-alias d="docker"
-alias dc="docker compose"
-alias dps="docker ps --format 'table {{.Names}}\t{{.Status}}\t{{.Ports}}'"
-alias dimg="docker images"
-alias dprune="docker system prune -af"
 
 # ===== Development =====
 alias todo='git grep -l TODO | xargs -n1 git blame -f -n -w | grep "$(git config user.name)" | grep TODO | sd ".\{9\}" "" | sd "\(.*\)[[:space:]]*" ""'
