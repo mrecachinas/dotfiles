@@ -20,26 +20,27 @@ export GITHUB_USERNAME=mrecachinas
 export PAGER=less
 export LESS="-R"
 
-if (( $+commands[nvim] )); then
+# Use `command -v` here: the first `$+commands[...]` lookup hashes all of PATH (~3ms).
+if command -v nvim >/dev/null; then
   export EDITOR=nvim VISUAL=nvim
-elif (( $+commands[vim] )); then
+elif command -v vim >/dev/null; then
   export EDITOR=vim VISUAL=vim
-elif (( $+commands[vi] )); then
+elif command -v vi >/dev/null; then
   export EDITOR=vi VISUAL=vi
 fi
 
 # fzf configuration
-if (( $+commands[fd] )); then
+if command -v fd >/dev/null; then
   export FZF_DEFAULT_COMMAND="fd --type f --hidden --follow --exclude .git"
   export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
   export FZF_ALT_C_COMMAND="fd --type d --hidden --follow --exclude .git"
 fi
 export FZF_CTRL_R_COMMAND=
 export FZF_DEFAULT_OPTS='--height=70% --layout=reverse --border --info=inline --prompt="❯ " --pointer="▶" --marker="✓"'
-if (( $+commands[bat] )); then
+if command -v bat >/dev/null; then
   export FZF_CTRL_T_OPTS='--preview "bat --style=numbers --color=always --line-range=:500 {}"'
 fi
-if (( $+commands[eza] )); then
+if command -v eza >/dev/null; then
   export FZF_ALT_C_OPTS='--preview "eza --tree --level=2 --icons --color=always {}"'
 fi
 
