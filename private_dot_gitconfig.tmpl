@@ -1,9 +1,19 @@
-[user]
-	signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINWFTLCIDBE3zhKz/6pQ7h8Mp3GGQtdXCni9Xm1ON6wG
-	name = Michael Recachinas
+{{- $codespaces := or (index . "codespaces") (eq (env "CODESPACES") "true") -}}
+{{- /* Only enable 1Password SSH signing where its signer exists; Codespaces signs commits itself. */ -}}
+{{- $opSshSign := "" -}}
+{{- if not $codespaces -}}
+{{-   range list "/Applications/1Password.app/Contents/MacOS/op-ssh-sign" "/opt/1Password/op-ssh-sign" -}}
+{{-     if and (not $opSshSign) (stat .) -}}
+{{-       $opSshSign = . -}}
+{{-     end -}}
+{{-   end -}}
+{{- end -}}
+{{ if not $codespaces }}[user]
+{{ if $opSshSign }}	signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINWFTLCIDBE3zhKz/6pQ7h8Mp3GGQtdXCni9Xm1ON6wG
+{{ end }}	name = Michael Recachinas
 	email = mrecachinas@github.com
 
-[alias]
+{{ end }}[alias]
 	br = branch --show-current
 	brv = branch -av
 	ci = commit
@@ -45,8 +55,8 @@
 [help]
 	autocorrect = prompt
 [commit]
-	gpgsign = true
-	verbose = true
+{{ if $opSshSign }}	gpgsign = true
+{{ end }}	verbose = true
 [rerere]
 	enabled = true
 	autoupdate = true
@@ -55,22 +65,22 @@
 	conflictstyle = zdiff3
 [pull]
 	rebase = true
-[filter "lfs"]
+{{ if or (not $codespaces) (lookPath "git-lfs") }}[filter "lfs"]
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
 	required = true
 	clean = git-lfs clean -- %f
-[gpg]
+{{ end }}{{ if $opSshSign }}[gpg]
 	format = ssh
 [gpg "ssh"]
-	program = /Applications/1Password.app/Contents/MacOS/op-ssh-sign
-[credential "https://github.com"]
+	program = {{ $opSshSign }}
+{{ end }}{{ if not $codespaces }}[credential "https://github.com"]
 	helper = 
 	helper = !/opt/homebrew/bin/gh auth git-credential
 [credential "https://gist.github.com"]
 	helper = 
 	helper = !/opt/homebrew/bin/gh auth git-credential
-[rebase]
+{{ end }}[rebase]
 	autoSquash = true
 	autoStash = true
 	updateRefs = true

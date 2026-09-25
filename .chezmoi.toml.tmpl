@@ -1,0 +1,5 @@
+{{- $codespaces := eq (env "CODESPACES") "true" -}}
+sourceDir = {{ .chezmoi.sourceDir | quote }}
+
+[data]
+codespaces = {{ $codespaces }}

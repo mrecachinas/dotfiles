@@ -4,27 +4,53 @@
 # For a full list of active aliases, run `alias`.
 
 # ===== Editor =====
-alias vim="/opt/homebrew/bin/vim"
-alias v="nvim"
-alias vi="nvim"
-alias code="code-insiders"
+if [[ -x /opt/homebrew/bin/vim ]]; then
+  alias vim="/opt/homebrew/bin/vim"
+fi
+if (( $+commands[nvim] )); then
+  alias v="nvim"
+  alias vi="nvim"
+fi
+if (( $+commands[code-insiders] )); then
+  alias code="code-insiders"
+fi
 
 # ===== Modern CLI replacements =====
-alias ls="eza --icons --group-directories-first"
-alias ll="eza -la --icons --group-directories-first --git"
-alias la="eza -a --icons --group-directories-first"
-alias lt="eza --tree --level=2 --icons"
-alias lt3="eza --tree --level=3 --icons"
-alias cat="bat --paging=never"
-alias catp="bat"  # with pager
-alias grep="rg"
-alias find="fd"
-alias du="dust"
-alias df="duf"
-alias ps="procs"
-alias top="btop"
-alias http="xh"
-alias man="tldr"  # quick reference; use \man for full manual
+if (( $+commands[eza] )); then
+  alias ls="eza --icons --group-directories-first"
+  alias ll="eza -la --icons --group-directories-first --git"
+  alias la="eza -a --icons --group-directories-first"
+  alias lt="eza --tree --level=2 --icons"
+  alias lt3="eza --tree --level=3 --icons"
+fi
+if (( $+commands[bat] )); then
+  alias cat="bat --paging=never"
+  alias catp="bat"  # with pager
+fi
+if (( $+commands[rg] )); then
+  alias grep="rg"
+fi
+if (( $+commands[fd] )); then
+  alias find="fd"
+fi
+if (( $+commands[dust] )); then
+  alias du="dust"
+fi
+if (( $+commands[duf] )); then
+  alias df="duf"
+fi
+if (( $+commands[procs] )); then
+  alias ps="procs"
+fi
+if (( $+commands[btop] )); then
+  alias top="btop"
+fi
+if (( $+commands[xh] )); then
+  alias http="xh"
+fi
+if (( $+commands[tldr] )); then
+  alias man="tldr"  # quick reference; use \man for full manual
+fi
 
 # ===== Navigation =====
 alias ..="cd .."
@@ -42,30 +68,39 @@ alias mkdir="mkdir -pv"
 # ===== Utilities =====
 alias weather="curl wttr.in"
 alias myip="curl -s ifconfig.me"
-alias localip="ipconfig getifaddr en0"
 alias ports="lsof -i -P -n | grep LISTEN"
-alias flushdns="sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder"
 alias path='echo $PATH | tr ":" "\n"'
 alias reload="exec zsh"
 alias latencies="curl http://cheat.sh/latencies"
 alias cheat="curl cheat.sh/"
 
-# ===== macOS specific =====
-alias tailscale="/Applications/Tailscale.app/Contents/MacOS/Tailscale"
-alias showfiles="defaults write com.apple.finder AppleShowAllFiles YES && killall Finder"
-alias hidefiles="defaults write com.apple.finder AppleShowAllFiles NO && killall Finder"
-alias afk="pmset displaysleepnow"
-alias emptytrash="trash -e"
+if [[ $OSTYPE == darwin* ]]; then
+  alias localip="ipconfig getifaddr en0"
+  alias flushdns="sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder"
+  alias tailscale="/Applications/Tailscale.app/Contents/MacOS/Tailscale"
+  alias showfiles="defaults write com.apple.finder AppleShowAllFiles YES && killall Finder"
+  alias hidefiles="defaults write com.apple.finder AppleShowAllFiles NO && killall Finder"
+  alias afk="pmset displaysleepnow"
+  alias emptytrash="trash -e"
+fi
 
 # ===== Development =====
 alias todo='git grep -l TODO | xargs -n1 git blame -f -n -w | grep "$(git config user.name)" | grep TODO | sd ".\{9\}" "" | sd "\(.*\)[[:space:]]*" ""'
 alias serve="python3 -m http.server"
-alias json="jless"
-alias br="broot"
+if (( $+commands[jless] )); then
+  alias json="jless"
+fi
+if (( $+commands[broot] )); then
+  alias br="broot"
+fi
 
 # ===== FZF powered =====
-alias preview="fzf --preview 'bat --color=always {}'"
-alias vf='nvim $(fzf --preview "bat --color=always {}")'  # fuzzy open in nvim
+if (( $+commands[fzf] && $+commands[bat] )); then
+  alias preview="fzf --preview 'bat --color=always {}'"
+fi
+if (( $+commands[fzf] && $+commands[nvim] && $+commands[bat] )); then
+  alias vf='nvim $(fzf --preview "bat --color=always {}")'  # fuzzy open in nvim
+fi
 
 # ===== Functions =====
 timezsh() {
@@ -110,13 +145,15 @@ replace() {
 }
 
 
-# Monitor PTY usage (useful when running out of PTYs with Ghostty + Copilot CLI)
-pty() {
-  local used=$(ls /dev/ttys* 2>/dev/null | wc -l | tr -d ' ')
-  local max=$(sysctl -n kern.tty.ptmx_max)
-  echo "${used} / ${max} PTYs in use"
-}
+if [[ $OSTYPE == darwin* ]]; then
+  # Monitor PTY usage (useful when running out of PTYs with Ghostty + Copilot CLI)
+  pty() {
+    local used=$(ls /dev/ttys* 2>/dev/null | wc -l | tr -d ' ')
+    local max=$(sysctl -n kern.tty.ptmx_max)
+    echo "${used} / ${max} PTYs in use"
+  }
 
-pty-watch() {
-  watch -n "${1:-5}" 'echo "$(ls /dev/ttys* | wc -l | tr -d " ") / $(sysctl -n kern.tty.ptmx_max) PTYs in use"'
-}
+  pty-watch() {
+    watch -n "${1:-5}" 'echo "$(ls /dev/ttys* | wc -l | tr -d " ") / $(sysctl -n kern.tty.ptmx_max) PTYs in use"'
+  }
+fi

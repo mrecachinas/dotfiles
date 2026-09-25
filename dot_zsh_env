@@ -1,34 +1,52 @@
 #!/usr/bin/env zsh
 
-# ===== Environment Variables =====
-export GPG_TTY=$(tty)
-export GITHUB_USERNAME=mrecachinas
-export BUN_INSTALL="$HOME/.bun"
-export EDITOR=nvim
-export VISUAL=nvim
-export PAGER=less
-export LESS="-R"
-
-# fzf configuration
-export FZF_DEFAULT_COMMAND="fd --type f --hidden --follow --exclude .git"
-export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-export FZF_ALT_C_COMMAND="fd --type d --hidden --follow --exclude .git"
-export FZF_CTRL_R_COMMAND=
-export FZF_DEFAULT_OPTS='--height=70% --layout=reverse --border --info=inline --prompt="❯ " --pointer="▶" --marker="✓"'
-export FZF_CTRL_T_OPTS='--preview "bat --style=numbers --color=always --line-range=:500 {}"'
-export FZF_ALT_C_OPTS='--preview "eza --tree --level=2 --icons --color=always {}"'
-
-# Go configuration
-export GOPROXY=https://goproxy.githubapp.com/mod,https://proxy.golang.org/,direct
-export GOPRIVATE=
-export GONOPROXY=
-export GONOSUMDB='github.com/github/*'
-
 # ===== PATH (consolidated, no duplicates) =====
-# Order: user tools → homebrew extras → system
+export BUN_INSTALL="$HOME/.bun"
 typeset -U path PATH
 # Scrub legacy paths inherited by long-lived terminal processes.
 path=(${path:#"$HOME/.rbenv/bin"})
 path=(${path:#"$HOME/.rbenv/shims"})
-export PATH="$HOME/.local/bin:$HOME/go/bin:$BUN_INSTALL/bin:$HOME/.cargo/bin:/opt/homebrew/opt/make/libexec/gnubin:/opt/homebrew/opt/mysql@8.0/bin:/opt/homebrew/bin:$PATH"
-export PATH="$PATH:$HOME/.dotnet/tools:/Applications/Obsidian.app/Contents/MacOS"
+if [[ $OSTYPE == darwin* ]]; then
+  export PATH="$HOME/.local/bin:$HOME/go/bin:$BUN_INSTALL/bin:$HOME/.cargo/bin:/opt/homebrew/opt/make/libexec/gnubin:/opt/homebrew/opt/mysql@8.0/bin:/opt/homebrew/bin:$PATH"
+  export PATH="$PATH:$HOME/.dotnet/tools:/Applications/Obsidian.app/Contents/MacOS"
+else
+  export PATH="$HOME/.local/bin:$HOME/go/bin:$BUN_INSTALL/bin:$HOME/.cargo/bin:$PATH"
+  export PATH="$PATH:$HOME/.dotnet/tools"
+fi
+
+# ===== Environment Variables =====
+export GPG_TTY=$(tty)
+export GITHUB_USERNAME=mrecachinas
+export PAGER=less
+export LESS="-R"
+
+if (( $+commands[nvim] )); then
+  export EDITOR=nvim VISUAL=nvim
+elif (( $+commands[vim] )); then
+  export EDITOR=vim VISUAL=vim
+elif (( $+commands[vi] )); then
+  export EDITOR=vi VISUAL=vi
+fi
+
+# fzf configuration
+if (( $+commands[fd] )); then
+  export FZF_DEFAULT_COMMAND="fd --type f --hidden --follow --exclude .git"
+  export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+  export FZF_ALT_C_COMMAND="fd --type d --hidden --follow --exclude .git"
+fi
+export FZF_CTRL_R_COMMAND=
+export FZF_DEFAULT_OPTS='--height=70% --layout=reverse --border --info=inline --prompt="❯ " --pointer="▶" --marker="✓"'
+if (( $+commands[bat] )); then
+  export FZF_CTRL_T_OPTS='--preview "bat --style=numbers --color=always --line-range=:500 {}"'
+fi
+if (( $+commands[eza] )); then
+  export FZF_ALT_C_OPTS='--preview "eza --tree --level=2 --icons --color=always {}"'
+fi
+
+# Go configuration is controlled by the devcontainer in Codespaces.
+if [[ ${CODESPACES:-} != true ]]; then
+  export GOPROXY=https://goproxy.githubapp.com/mod,https://proxy.golang.org/,direct
+  export GOPRIVATE=
+  export GONOPROXY=
+  export GONOSUMDB='github.com/github/*'
+fi

@@ -1,2 +1,8 @@
 README.md
 setup.sh
+install.sh
+{{ if ne .chezmoi.os "darwin" }}
+.Brewfile
+Library
+Library/**
+{{ end }}
