@@ -109,7 +109,7 @@ EOF
 
 main() {
     if [[ "$(uname -s)" != "Darwin" ]]; then
-        warn "This setup script is only intended for macOS."
+        warn "This setup script is only intended for macOS; Codespaces use install.sh."
         exit 1
     fi
 
