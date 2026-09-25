@@ -17,7 +17,7 @@ $line_break\
 $character"""
 
 # Timeout for commands (ms)
-command_timeout = 1000
+command_timeout = 2000
 
 # ===== Character (prompt symbol) =====
 [character]

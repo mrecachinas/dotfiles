@@ -89,6 +89,7 @@ fi
 [ -f ~/.config/op/plugins.sh ] && source ~/.config/op/plugins.sh
 
 [ -f ~/.zsh_aliases ] && source ~/.zsh_aliases
+[ -f ~/.config/broot/launcher/bash/br ] && source ~/.config/broot/launcher/bash/br
 
 if [[ -f /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh ]]; then
     source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
