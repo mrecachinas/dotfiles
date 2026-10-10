@@ -42,6 +42,25 @@ Some account-gated setup still needs an interactive sign-in:
 - Run `gh auth login` for GitHub CLI/git HTTPS credentials.
 - Open Vim and run `:Copilot setup`.
 
+Setup attempts Mac App Store apps by default; it does not use the unsupported
+`mas account` command to guess sign-in status. If a bundle installation fails,
+setup reports the failure and does not record it as complete.
+
+To explicitly skip Mac App Store apps while signed out:
+
+```sh
+DOTFILES_SKIP_MAS=1 chezmoi apply
+```
+
+For a new Mac, pass the variable to the setup shell:
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/mrecachinas/dotfiles/main/setup.sh | DOTFILES_SKIP_MAS=1 bash
+```
+
+After signing in, run `chezmoi apply` without `DOTFILES_SKIP_MAS` to include the
+Mac App Store apps.
+
 ## GitHub Codespaces
 
 Select this repository as your dotfiles repository at [github.com/settings/codespaces](https://github.com/settings/codespaces); Codespaces runs the generated `install.sh` automatically. It skips Homebrew, `mas`, and macOS-only files, and leaves Git identity, signing, and credential configuration to Codespaces.
