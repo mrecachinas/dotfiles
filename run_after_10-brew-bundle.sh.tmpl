@@ -64,6 +64,11 @@ if [[ ! -f "$BREWFILE" ]]; then
 fi
 
 if [[ "$SKIP_MAS" == 0 ]]; then
+    if state_matches "$FULL_STATE" && brew bundle check --file="$BREWFILE" >/dev/null 2>&1; then
+        echo "Homebrew bundle already satisfied"
+        exit 0
+    fi
+
     echo "Installing Homebrew bundle"
     if ! run_brew_bundle "$BREWFILE"; then
         cat >&2 <<'EOF'
