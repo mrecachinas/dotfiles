@@ -76,10 +76,10 @@
 	program = {{ $opSshSign }}
 {{ end }}{{ if not $codespaces }}[credential "https://github.com"]
 	helper = 
-	helper = !/opt/homebrew/bin/gh auth git-credential
+	helper = !gh auth git-credential
 [credential "https://gist.github.com"]
 	helper = 
-	helper = !/opt/homebrew/bin/gh auth git-credential
+	helper = !gh auth git-credential
 {{ end }}[rebase]
 	autoSquash = true
 	autoStash = true

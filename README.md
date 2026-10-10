@@ -12,8 +12,27 @@ The script is idempotent and safe to rerun. It installs Xcode Command Line Tools
 
 Chezmoi-managed setup installs or updates:
 
-- Homebrew dependencies from `~/.Brewfile`
+- Version-pinned developer tools from `~/.config/mise/config.toml`, installed before the Homebrew bundle
+- Remaining Homebrew dependencies from `~/.Brewfile`: native libraries, build tools, services, apps, and tools without a verified native mise installation
 - vim-plug and Vim plugins
+
+On macOS, mise owns the CLI tools declared in its config; the Brewfile no longer
+declares those tools. Shell initialization puts mise tools first, and Git's
+GitHub credential helper uses `gh` from `PATH`. Existing Node and Ruby pins are
+unchanged. The initial CLI pins match the installed Homebrew versions rather
+than upgrading tools during migration. Update the pins in the chezmoi source
+config and run `chezmoi apply` to persist tool upgrades across machines.
+
+This is a staged migration, not a Homebrew uninstall. It does not remove installed
+formulae, stop services, or modify database data. Keep Homebrew for the remaining
+Brewfile, including PostgreSQL 14 and launchdns service management, Mac App Store
+apps, VS Code extensions, and Go/Cargo/uv packages. Do not run
+`brew bundle cleanup --force` as part of this migration.
+Docker remains unlinked, and the existing VS Code Insiders and 1Password app
+choices are preserved.
+The tested aqua packages for `btop` and `tokei` were unsupported; `dasel`, `dust`,
+and `hyperfine` downloaded Intel-only binaries that could not run on this Mac.
+Those tools remain in Homebrew rather than requiring Rosetta or changing versions.
 
 Some account-gated setup still needs an interactive sign-in:
 

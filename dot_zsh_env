@@ -14,6 +14,11 @@ else
   export PATH="$PATH:$HOME/.dotnet/tools"
 fi
 
+if command -v mise >/dev/null 2>&1; then
+  eval "$(mise activate zsh)"
+  eval "$(mise env --shell zsh)"
+fi
+
 # ===== Environment Variables =====
 export GPG_TTY=$(tty)
 export GITHUB_USERNAME=mrecachinas

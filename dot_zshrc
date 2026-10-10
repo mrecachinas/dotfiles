@@ -64,11 +64,6 @@ _cache_zsh_init() {
     source "$cache_file"
 }
 
-# ===== Runtime Management =====
-if command -v mise >/dev/null 2>&1; then
-    eval "$(mise activate zsh)"
-fi
-
 # ===== Tool Integrations =====
 # Zoxide (smarter cd)
 if command -v zoxide >/dev/null 2>&1; then

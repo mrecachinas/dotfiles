@@ -45,6 +45,14 @@ if ! command -v brew >/dev/null 2>&1; then
     exit 1
 fi
 
+if ! command -v mise >/dev/null 2>&1; then
+    brew install mise
+fi
+
+echo "Installing mise-managed developer tools"
+mise install
+eval "$(mise env --shell bash)"
+
 if [[ ! -f "$BREWFILE" ]]; then
     echo "$BREWFILE does not exist; skipping brew bundle" >&2
     exit 0
